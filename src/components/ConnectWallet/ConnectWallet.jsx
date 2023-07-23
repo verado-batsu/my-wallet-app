@@ -1,6 +1,6 @@
 import { ethers, formatEther } from 'ethers';
 import { useState } from 'react';
-import MetaMaskSDK from '@metamask/sdk';
+import { MetaMaskSDK } from '@metamask/sdk';
 
 import {
     ConnectWalletButton,
