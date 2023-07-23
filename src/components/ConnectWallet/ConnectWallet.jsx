@@ -1,5 +1,6 @@
 import { ethers, formatEther } from 'ethers';
 import { useState } from 'react';
+import MetaMaskSDK from '@metamask/sdk';
 
 import {
     ConnectWalletButton,
@@ -32,6 +33,10 @@ export function ConnectWallet() {
 
     async function onConnect() {
         if (window.ethereum) {
+            new MetaMaskSDK({
+                useDeeplink: false,
+                communicationLayerPreference: 'socket',
+            });
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
 
