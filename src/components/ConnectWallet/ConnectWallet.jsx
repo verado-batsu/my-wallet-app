@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { ethers, formatEther } from 'ethers';
 import { useState } from 'react';
 
 import {
@@ -26,15 +26,17 @@ import { Modal } from '../Modal/Modal';
  */
 
 export function ConnectWallet() {
-    const [userAccount, setUserAccount] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [userAccount, setUserAccount] = useState(null);
+    const [balance, setBalance] = useState(0);
 
     async function onConnect() {
         if (window.ethereum) {
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
 
-            console.log(signer);
+            const balance = await provider.getBalance(signer.address);
+            setBalance(Number(formatEther(balance)).toFixed(3));
             setUserAccount(signer);
             closeModal();
         } else {
@@ -46,13 +48,22 @@ export function ConnectWallet() {
         setShowModal(false);
     }
 
+    function transformAddress(address) {
+        return `${address.slice(0, 3)}...${address.slice(
+            address.length - 4,
+            address.length - 1
+        )}`;
+    }
+
     return (
         <>
             {showModal && <Modal closeModal={closeModal} />}
             {userAccount ? (
                 <UserWallet>
-                    <WalletBalance>0</WalletBalance>
-                    <WalletAddress>{userAccount.address}</WalletAddress>
+                    <WalletBalance>{balance}</WalletBalance>
+                    <WalletAddress>
+                        {transformAddress(userAccount.address)}
+                    </WalletAddress>
                 </UserWallet>
             ) : (
                 <ConnectWalletButton type="button" onClick={onConnect}>
