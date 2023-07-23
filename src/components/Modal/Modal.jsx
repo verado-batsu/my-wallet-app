@@ -1,4 +1,6 @@
 import { createPortal } from 'react-dom';
+import { useEffect, useState } from 'react';
+import { UAParser } from 'ua-parser-js';
 
 import {
     ButtonClose,
@@ -7,9 +9,37 @@ import {
     ModalTitle,
     ModalWrapper,
 } from './Modal.styled';
-import { useEffect } from 'react';
 
 export function Modal({ closeModal }) {
+    const [link, setLink] = useState(null);
+
+    useEffect(() => {
+        let parser = new UAParser(navigator.userAgent);
+        let parserResults = parser.getOS();
+
+        switch (parserResults.name) {
+            case 'Windows':
+                setLink(
+                    'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn'
+                );
+                break;
+            case 'Android':
+                setLink(
+                    'https://play.google.com/store/apps/details?id=io.metamask'
+                );
+                break;
+            case 'iOS' || 'Mac OS':
+                setLink(
+                    'https://apps.apple.com/ru/app/metamask-blockchain-wallet/id1438144202'
+                );
+                break;
+            default:
+                setLink(
+                    'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn'
+                );
+        }
+    }, []);
+
     useEffect(() => {
         const handleKeyDown = event => {
             if (event.key === 'Escape') {
@@ -33,11 +63,7 @@ export function Modal({ closeModal }) {
                 <ModalTitle>
                     First, you should download MetaMask to connect your wallet
                 </ModalTitle>
-                <ModalLink
-                    href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
-                    target="_blank"
-                    rel="noreferrer"
-                >
+                <ModalLink href={link} target="_blank" rel="noreferrer">
                     Download MetaMask
                 </ModalLink>
             </ModalWrapper>
