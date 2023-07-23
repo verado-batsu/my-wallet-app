@@ -36,7 +36,7 @@ export function ConnectWallet() {
     }
 
     async function onConnect() {
-        if (isMetaMaskInstalled) {
+        if (isMetaMaskInstalled()) {
             new MetaMaskSDK({
                 useDeeplink: false,
                 communicationLayerPreference: 'socket',
