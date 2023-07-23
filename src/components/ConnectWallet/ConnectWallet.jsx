@@ -31,8 +31,12 @@ export function ConnectWallet() {
     const [userAccount, setUserAccount] = useState(null);
     const [balance, setBalance] = useState(0);
 
+    function isMetaMaskInstalled() {
+        return Boolean(window.ethereum && window.ethereum.isMetaMask);
+    }
+
     async function onConnect() {
-        if (window.ethereum) {
+        if (isMetaMaskInstalled) {
             new MetaMaskSDK({
                 useDeeplink: false,
                 communicationLayerPreference: 'socket',
