@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {
+    Container,
+    Footer,
+    Header,
+    HeaderWrapper,
+    Logo,
+    Main,
+    BodyContainer,
+    MainWrapper,
+} from './App.styled';
+import logo from './assets/images/logo.jpg';
+
+import { ConnectWallet } from './components/ConnectWallet/ConnectWallet';
+import { TransferTokenForm } from './components/TransferTokenForm/TransferTokenForm';
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (
+        <BodyContainer>
+            <Header>
+                <Container>
+                    <HeaderWrapper>
+                        <Logo src={logo} alt="Logo" />
+                        <ConnectWallet />
+                    </HeaderWrapper>
+                </Container>
+            </Header>
+            <Main>
+                <Container>
+                    <MainWrapper>
+                        <TransferTokenForm />
+                    </MainWrapper>
+                </Container>
+            </Main>
+            <Footer>
+                <Container>
+                    <a
+                        href="https://github.com/verado-batsu/my-wallet-app"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        GitHub Repository
+                    </a>
+                </Container>
+            </Footer>
+        </BodyContainer>
+    );
 }
 
-export default App
+export default App;
