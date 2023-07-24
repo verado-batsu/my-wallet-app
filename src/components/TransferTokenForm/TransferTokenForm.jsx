@@ -46,6 +46,7 @@ export function TransferTokenForm() {
             setIsLoading(false);
         } catch (error) {
             Notify.failure(error.message);
+            setIsLoading(false);
             console.log(error);
         }
 
