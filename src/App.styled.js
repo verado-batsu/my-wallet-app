@@ -28,6 +28,8 @@ export const BodyContainer = styled.div`
 
 export const Header = styled.header`
 	padding: 10px 0;
+	
+	background-color: aquamarine;
 `
 
 export const HeaderWrapper = styled.div`

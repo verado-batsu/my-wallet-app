@@ -1,11 +1,11 @@
 import { styled } from "styled-components";
 
 export const ConnectWalletButton = styled.button`
-	padding: 10px 15px;
+	padding: 10px 20px;
 
-	border-radius: 8px;
-	border: 1px solid;
-	background-color: #fff;
+	border-radius: 25px;
+	border: 1px solid #000;
+	background-color: transparent;
 
 	font-size: 16px;
 
@@ -19,9 +19,12 @@ export const ConnectWalletButton = styled.button`
 `
 
 export const UserWallet = styled.div`
-	width: 100px;
 	display: flex;
 	gap: 10px;
+	padding: 10px 20px;
+
+	border-radius: 25px;
+	border: 1px solid;
 `
 export const WalletBalance = styled.span`
 `

@@ -5,7 +5,7 @@ export const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
 
 export const UserAccountProvider = ({ children }) => {
-    const [stateOfTransaction, setStateOfTransaction] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [userAccount, setUserAccount] = useState(null);
     const [balance, setBalance] = useState(0);
 
@@ -14,10 +14,10 @@ export const UserAccountProvider = ({ children }) => {
             value={{
                 userAccount,
                 balance,
-                stateOfTransaction,
+                isLoading,
                 setUserAccount,
                 setBalance,
-                setStateOfTransaction,
+                setIsLoading,
             }}
         >
             {children}

@@ -34,6 +34,8 @@ export const Input = styled.input`
 `
 
 export const Button = styled.button`
+	display: flex;
+	justify-content: center;
 	padding: 10px 15px;
 
 	border-radius: 8px;
@@ -48,5 +50,13 @@ export const Button = styled.button`
 	&:focus {
 		background-color: #535bf2;
 		color: #fff;
+
+		.loader{
+			stroke: #fff;
+		}
+	}
+
+	@media screen and (min-width: 768px) {
+		font-size: 24px;
 	}
 `

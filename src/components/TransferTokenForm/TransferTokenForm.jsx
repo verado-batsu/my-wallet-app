@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { ethers, formatEther, parseEther } from 'ethers';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Oval } from 'react-loader-spinner';
 
 import { Button, Form, Input, Label } from './TransferTokenForm.styled';
 
 import { useUser } from '../../context/UserAccountContext';
 
 export function TransferTokenForm() {
-    const { userAccount, setBalance, setStateOfTransaction } = useUser();
+    const { userAccount, isLoading, setBalance, setIsLoading } = useUser();
 
     const [walletAddress, setWalletAddress] = useState('');
     const [amount, setAmount] = useState('');
@@ -16,28 +18,34 @@ export function TransferTokenForm() {
 
         try {
             if (!userAccount) {
-                alert('First you should connect your wallet');
+                Notify.failure('First you should connect your wallet');
                 return;
             }
 
             if (!walletAddress || !amount) {
-                alert('You should input address and number of token');
+                Notify.failure(
+                    'You should input wallet address and number of token'
+                );
                 return;
             }
+            setIsLoading(true);
 
             const tx = await userAccount.sendTransaction({
                 to: walletAddress,
                 value: parseEther(amount),
             });
 
-            const receipt = await tx.wait();
+            await tx.wait();
 
             const provider = new ethers.BrowserProvider(window.ethereum);
             const balance = await provider.getBalance(userAccount.address);
             setBalance(Number(formatEther(balance)).toFixed(3));
 
-            setStateOfTransaction(receipt);
+            Notify.success('Transaction was successful');
+
+            setIsLoading(false);
         } catch (error) {
+            Notify.failure(error.message);
             console.log(error);
         }
 
@@ -67,7 +75,23 @@ export function TransferTokenForm() {
                     value={amount}
                 />
             </Label>
-            <Button type="submit">Transfer</Button>
+            <Button type="submit" disabled={isLoading}>
+                {isLoading ? (
+                    <Oval
+                        height={40}
+                        width={40}
+                        color="#5cd4f1"
+                        visible={true}
+                        wrapperClass="loader"
+                        ariaLabel="oval-loading"
+                        secondaryColor="#5cd4f1"
+                        strokeWidth={6}
+                        strokeWidthSecondary={6}
+                    />
+                ) : (
+                    'Transfer'
+                )}
+            </Button>
         </Form>
     );
 }
