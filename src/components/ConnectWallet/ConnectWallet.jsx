@@ -1,6 +1,5 @@
 import { ethers, formatEther } from 'ethers';
 import { useState } from 'react';
-import { MetaMaskSDK } from '@metamask/sdk';
 
 import {
     ConnectWalletButton,
@@ -10,6 +9,7 @@ import {
 } from './ConnectWallet.styled';
 
 import { Modal } from '../Modal/Modal';
+import { useUser } from '../../context/UserAccountContext';
 
 /**
 	depend
@@ -27,29 +27,28 @@ import { Modal } from '../Modal/Modal';
  */
 
 export function ConnectWallet() {
+    const { userAccount, balance, setUserAccount, setBalance } = useUser();
     const [showModal, setShowModal] = useState(false);
-    const [userAccount, setUserAccount] = useState(null);
-    const [balance, setBalance] = useState(0);
 
     function isMetaMaskInstalled() {
         return Boolean(window.ethereum && window.ethereum.isMetaMask);
     }
 
     async function onConnect() {
-        if (isMetaMaskInstalled()) {
-            new MetaMaskSDK({
-                useDeeplink: false,
-                communicationLayerPreference: 'socket',
-            });
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            const signer = await provider.getSigner();
+        try {
+            if (isMetaMaskInstalled()) {
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                const signer = await provider.getSigner();
 
-            const balance = await provider.getBalance(signer.address);
-            setBalance(Number(formatEther(balance)).toFixed(3));
-            setUserAccount(signer);
-            closeModal();
-        } else {
-            setShowModal(true);
+                const balance = await provider.getBalance(signer.address);
+                setBalance(Number(formatEther(balance)).toFixed(3));
+                setUserAccount(signer);
+                closeModal();
+            } else {
+                setShowModal(true);
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -58,7 +57,7 @@ export function ConnectWallet() {
     }
 
     function transformAddress(address) {
-        return `${address.slice(0, 3)}...${address.slice(
+        return `${address.slice(0, 5)}...${address.slice(
             address.length - 4,
             address.length - 1
         )}`;
