@@ -26,7 +26,13 @@ export const Input = styled.input`
 	padding: 10px 15px;
 
 	border-radius: 8px;
-	border: 1px solid;
+	border: ${(props) => {
+		if (props.$isError) {
+			return '1px solid red'
+		} else {
+			return '1px solid'
+		}
+	}};
 
 	@media screen and (min-width: 768px) {
 		font-size: 16px;
@@ -59,4 +65,8 @@ export const Button = styled.button`
 	@media screen and (min-width: 768px) {
 		font-size: 24px;
 	}
+`
+
+export const ErrorMessage = styled.p`
+	color: red;
 `

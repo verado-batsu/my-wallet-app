@@ -1,11 +1,11 @@
 # My-Wallet-App
 
-<!-- This template provides a minimal setup to get React working in Vite with HMR and
-some ESLint rules.
+This App provides the functionality of connecting a wallet, showing balance and
+address and making transfers
 
-Currently, two official plugins are available:
+Was made according to this
+<a href="https://docs.google.com/document/d/1v_duePP5cXCIK0amZO9UK2BSnHWCY1iWUy239HG0qys/edit">technical
+task</a> and using React, Html, Css
+(<a href="https://styled-components.com/">styled components</a>)
 
--   [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md)
-    uses [Babel](https://babeljs.io/) for Fast Refresh
--   [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc)
-    uses [SWC](https://swc.rs/) for Fast Refresh -->
+This App was deployed with <a href="https://styled-components.com/">Vercel</a>

@@ -3,15 +3,24 @@ import { ethers, formatEther, parseEther } from 'ethers';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Oval } from 'react-loader-spinner';
 
-import { Button, Form, Input, Label } from './TransferTokenForm.styled';
+import {
+    Button,
+    ErrorMessage,
+    Form,
+    Input,
+    Label,
+} from './TransferTokenForm.styled';
 
 import { useUser } from '../../context/UserAccountContext';
+import { checkAddressRegexp } from '../../helpers/checkAddressRegexp';
 
 export function TransferTokenForm() {
-    const { userAccount, isLoading, setBalance, setIsLoading } = useUser();
+    const { userAccount, balance, isLoading, setBalance, setIsLoading } =
+        useUser();
 
     const [walletAddress, setWalletAddress] = useState('');
     const [amount, setAmount] = useState('');
+    const [isError, serIsError] = useState('');
 
     async function transferTokenForm(e) {
         e.preventDefault();
@@ -28,6 +37,14 @@ export function TransferTokenForm() {
                 );
                 return;
             }
+
+            if (!checkAddressRegexp(walletAddress)) {
+                serIsError(
+                    'Wrong wallet address entered, please check that the address starts with "0x" and ends with 40 characters [0-9A-F]'
+                );
+                return;
+            }
+
             setIsLoading(true);
 
             const tx = await userAccount.sendTransaction({
@@ -45,9 +62,9 @@ export function TransferTokenForm() {
 
             setIsLoading(false);
         } catch (error) {
-            Notify.failure(error.message);
             setIsLoading(false);
-            console.log(error);
+            Notify.failure('Something went wrong');
+            console.log(error.message);
         }
 
         resetForm();
@@ -66,14 +83,19 @@ export function TransferTokenForm() {
                     type="text"
                     placeholder="Wallet address"
                     value={walletAddress}
+                    $isError={isError}
                 />
+                {isError && <ErrorMessage>{isError}</ErrorMessage>}
             </Label>
             <Label>
                 <Input
                     onChange={e => setAmount(e.target.value.trim())}
-                    type="text"
-                    placeholder="Amount"
+                    type="number"
+                    placeholder="Amount of token"
                     value={amount}
+                    min={0.0001}
+                    max={balance}
+                    step={0.0001}
                 />
             </Label>
             <Button type="submit" disabled={isLoading}>
